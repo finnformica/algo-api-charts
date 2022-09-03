@@ -1,4 +1,4 @@
-# algo-api
+# algo-api-charts
 
 ## Introduction
 
