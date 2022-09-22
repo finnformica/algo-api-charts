@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 
 const useRequest = (initUrl) => {
-  const [data, setData] = useState({});
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState({});
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     let ignore = false;
@@ -12,7 +12,6 @@ const useRequest = (initUrl) => {
       setLoading(true);
 
       try {
-        setError({});
         const response = await fetch(initUrl);
         if (!ignore) setData(await response.json());
       } catch (err) {
