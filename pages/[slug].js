@@ -3,19 +3,19 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 
 // import MUI inputs
-import { UserInputs } from "../../components/UserInputs";
+import { UserInputs } from "../components/UserInputs";
 
 // custom hook for async fetching data
-import useRequest from "../../components/useRequest";
+import useRequest from "../components/useRequest";
 
 // config for candlestick chart
-import { series, options } from "../../utils/config";
+import { series, options } from "../utils/config";
 
 // url for api
-import { urlString } from "../../utils/utils";
+import { urlString } from "../utils/utils";
 
 // available routes from api
-import { slugs } from "../../utils/constants";
+import { slugs } from "../utils/constants";
 
 // dynamically load component with no SSR
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
@@ -30,7 +30,7 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
 
 const IndicatorPage = ({ slug }) => {
   const [ticker, setTicker] = useState("MSFT");
-  const [start, setStart] = useState("2019-01-01");
+  const [start, setStart] = useState("2021-01-01");
 
   const [url, setUrl] = useState(urlString(slug, ticker, start));
 
