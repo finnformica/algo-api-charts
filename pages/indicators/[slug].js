@@ -2,6 +2,9 @@ import React from "react";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 
+// import MUI inputs
+import { UserInputs } from "../../components/UserInputs";
+
 // custom hook for async fetching data
 import useRequest from "../../components/useRequest";
 
@@ -9,7 +12,10 @@ import useRequest from "../../components/useRequest";
 import { series, options } from "../../utils/config";
 
 // url for api
-import { urlString } from "../../utils/url";
+import { urlString } from "../../utils/utils";
+
+// available routes from api
+import { slugs } from "../../utils/constants";
 
 // dynamically load component with no SSR
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
@@ -17,15 +23,14 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
 });
 
 // TO-DO LIST
-// COMPLETE: setup graph with data loaded from API
-// install MUI
-// place some inputs on page
-// -- combo select box, API generated inputs like style analysis
-// -- date picker
+// connect inputs to parent states for url
+// handle button click event
+// update URL when indicator is selected
+// add oscillators chart in ternary operator
 
 const IndicatorPage = ({ slug }) => {
-  const ticker = "ADA-USD";
-  const start = "2021-01-01";
+  const [ticker, setTicker] = useState("MSFT");
+  const [start, setStart] = useState("2019-01-01");
 
   const [url, setUrl] = useState(urlString(slug, ticker, start));
 
@@ -52,24 +57,14 @@ const IndicatorPage = ({ slug }) => {
         ) : (
           <h1>oscillators in beta</h1>
         ))}
+
+      <UserInputs />
     </>
   );
 };
 
 // only allow selected routes, replace list with programmatic solution
 export async function getStaticPaths() {
-  const slugs = [
-    "average-true-range",
-    "bollinger-band",
-    "ichimoku-cloud",
-    "macd",
-    "moving-average-crossover",
-    "rsi",
-    "stochastic-oscillator",
-    "supertrend",
-    "volatility",
-  ];
-
   const paths = slugs.map((slug) => ({
     params: {
       slug,

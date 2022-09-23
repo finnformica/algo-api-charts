@@ -12,6 +12,7 @@ const useRequest = (initUrl) => {
       setLoading(true);
 
       try {
+        setLoading(true);
         const response = await fetch(initUrl);
         if (!ignore) setData(await response.json());
       } catch (err) {
