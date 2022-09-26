@@ -64,7 +64,13 @@ const IndicatorPage = () => {
   return (
     <>
       {loading && (
-        <div style={{ textAlign: "center", paddingTop: "10rem" }}>
+        <div
+          style={{
+            textAlign: "center",
+            paddingTop: "10rem",
+            fontFamily: "sans-serif",
+          }}
+        >
           <CircularProgress />
           <h1>Data is loading...</h1>
         </div>
