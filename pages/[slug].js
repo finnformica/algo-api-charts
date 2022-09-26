@@ -1,6 +1,7 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 
 // import MUI inputs
 import { UserInputs } from "../components/UserInputs";
@@ -23,19 +24,28 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
 });
 
 // TO-DO LIST
-// add context provider to remove prop drilling
 // update URL when indicator is selected
+// fix date picker
 // add oscillators chart in ternary operator
 
 const IndicatorPage = ({ slug }) => {
+  const router = useRouter();
+
+  // define inputs
   const [ticker, setTicker] = useState("MSFT");
   const [start, setStart] = useState("2021-01-01");
   const [indicator, setIndicator] = useState("Supertrend");
-  // const [slug, setSlug] = useState("supertrend");
 
+  // define fetch url
   const [url, setUrl] = useState(urlString(slug, ticker, start));
 
+  // load fetch data using custom hook
   let { data, loading, error } = useRequest(url);
+
+  useEffect(() => {
+    const slug = titleToSlug(indicator);
+    router.push(`/${slug}`, undefined, { shallow: true });
+  }, [url]);
 
   const handleClick = () => {
     setUrl(urlString(titleToSlug(indicator), ticker, start));
