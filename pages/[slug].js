@@ -13,7 +13,7 @@ import useRequest from "../components/useRequest";
 import { series, options } from "../utils/config";
 
 // url for api
-import { urlString, titleToSlug } from "../utils/utils";
+import { urlString, titleToSlug, slugToTitle } from "../utils/utils";
 
 // available routes from api
 import { slugs } from "../utils/constants";
@@ -24,24 +24,27 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
 });
 
 // TO-DO LIST
-// update URL when indicator is selected
 // fix date picker
 // add oscillators chart in ternary operator
+// put input states into local storage for persistance
 
-const IndicatorPage = ({ slug }) => {
+const IndicatorPage = () => {
   const router = useRouter();
 
-  // define inputs
+  // define input states
   const [ticker, setTicker] = useState("MSFT");
   const [start, setStart] = useState("2021-01-01");
   const [indicator, setIndicator] = useState("Supertrend");
 
   // define fetch url
-  const [url, setUrl] = useState(urlString(slug, ticker, start));
+  const [url, setUrl] = useState(
+    urlString(titleToSlug(indicator), ticker, start)
+  );
 
   // load fetch data using custom hook
   let { data, loading, error } = useRequest(url);
 
+  // change app url to /chosen-indicator
   useEffect(() => {
     const slug = titleToSlug(indicator);
     router.push(`/${slug}`, undefined, { shallow: true });
@@ -60,7 +63,7 @@ const IndicatorPage = ({ slug }) => {
       {data &&
         (data.info.type === "overlay" ? (
           <ReactApexChart
-            options={options(slug)}
+            options={options(ticker, slugToTitle(data.info.name))}
             series={series(data)}
             type="candlestick"
           />

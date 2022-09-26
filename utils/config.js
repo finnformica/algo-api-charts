@@ -1,13 +1,16 @@
 import { zipOHLC, zipTimeseries } from "./utils";
 
-export const options = (slug) => ({
+export const options = (ticker, title) => ({
   chart: {
     type: "candlestick",
     height: 350,
   },
   title: {
-    text: "Indicator Dashboard",
-    align: "left",
+    text: `${ticker} - ${title}`,
+    align: "center",
+    style: {
+      fontSize: "28px",
+    },
   },
   xaxis: {
     type: "datetime",
