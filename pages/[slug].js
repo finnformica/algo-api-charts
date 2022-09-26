@@ -6,6 +6,9 @@ import { useRouter } from "next/router";
 // import MUI inputs
 import { UserInputs } from "../components/UserInputs";
 
+// import MUI circular loader
+import CircularProgress from "@mui/material/CircularProgress";
+
 // custom hook for async fetching data
 import useRequest from "../components/useRequest";
 
@@ -24,7 +27,6 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
 });
 
 // TO-DO LIST
-// fix date picker
 // add oscillators chart in ternary operator
 // put input states into local storage for persistance
 
@@ -33,7 +35,7 @@ const IndicatorPage = () => {
 
   // define input states
   const [ticker, setTicker] = useState("MSFT");
-  const [start, setStart] = useState("2021-01-01");
+  const [start, setStart] = useState("2021-01-02");
   const [indicator, setIndicator] = useState("Supertrend");
 
   // define fetch url
@@ -51,33 +53,45 @@ const IndicatorPage = () => {
   }, [url]);
 
   const handleClick = () => {
+    console.log({
+      slug: titleToSlug(indicator),
+      ticker,
+      start,
+    });
     setUrl(urlString(titleToSlug(indicator), ticker, start));
   };
 
   return (
     <>
-      {loading && <h1>Data is loading...</h1>}
+      {loading && (
+        <div style={{ textAlign: "center", paddingTop: "10rem" }}>
+          <CircularProgress />
+          <h1>Data is loading...</h1>
+        </div>
+      )}
 
       {error && <h1>Failed to fetch - {error}</h1>}
 
-      {data &&
-        (data.info.type === "overlay" ? (
-          <ReactApexChart
-            options={options(ticker, slugToTitle(data.info.name))}
-            series={series(data)}
-            type="candlestick"
+      {data && (
+        <>
+          {data.info.type === "overlay" ? (
+            <ReactApexChart
+              options={options(ticker, slugToTitle(data.info.name))}
+              series={series(data)}
+              type="candlestick"
+            />
+          ) : (
+            <h1>oscillators in beta</h1>
+          )}
+          <UserInputs
+            setTicker={setTicker}
+            setStart={setStart}
+            setIndicator={setIndicator}
+            start={start}
+            onClick={handleClick}
           />
-        ) : (
-          <h1>oscillators in beta</h1>
-        ))}
-
-      <UserInputs
-        setTicker={setTicker}
-        setStart={setStart}
-        setIndicator={setIndicator}
-        start={start}
-        onClick={handleClick}
-      />
+        </>
+      )}
     </>
   );
 };
