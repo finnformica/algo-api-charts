@@ -1,4 +1,4 @@
-import { zipOHLC, zipTimeseries, makeTitle } from "./utils";
+import { zipOHLC, zipTimeseries } from "./utils";
 
 export const options = (slug) => ({
   chart: {
@@ -6,7 +6,7 @@ export const options = (slug) => ({
     height: 350,
   },
   title: {
-    text: makeTitle(slug),
+    text: "Indicator Dashboard",
     align: "left",
   },
   xaxis: {
@@ -24,40 +24,6 @@ export const options = (slug) => ({
     shared: false,
   },
 });
-
-// export const series1 = ({
-//   price: { open, high, low, close },
-//   signals,
-//   info: { ticker },
-// }) => [
-//   {
-//     name: "Upper Bollinger Band",
-//     type: "line",
-//     data: zipTimeseries(
-//       Object.keys(signals.upper_bb),
-//       Object.values(signals.upper_bb)
-//     ),
-//   },
-//   {
-//     name: "Lower Bollinger Band",
-//     type: "line",
-//     data: zipTimeseries(
-//       Object.keys(signals.lower_bb),
-//       Object.values(signals.lower_bb)
-//     ),
-//   },
-//   {
-//     name: ticker + " Price",
-//     type: "candlestick",
-//     data: zipOHLC(
-//       Object.keys(open),
-//       Object.values(open),
-//       Object.values(high),
-//       Object.values(low),
-//       Object.values(close)
-//     ),
-//   },
-// ];
 
 export const series = ({
   price: { open, high, low, close },

@@ -9,10 +9,11 @@ const useRequest = (initUrl) => {
     let ignore = false;
 
     const fetchData = async () => {
+      // reset states
       setLoading(true);
+      setData(null);
 
       try {
-        setLoading(true);
         const response = await fetch(initUrl);
         if (!ignore) setData(await response.json());
       } catch (err) {

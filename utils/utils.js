@@ -12,7 +12,7 @@ export const zipOHLC = (dates, open, high, low, close) =>
     ],
   }));
 
-export function makeTitle(slug) {
+export function slugToTitle(slug) {
   var words = slug.split("-");
 
   for (var i = 0; i < words.length; i++) {
@@ -23,7 +23,14 @@ export function makeTitle(slug) {
   return words.join(" ");
 }
 
+export function titleToSlug(title) {
+  return title
+    .toLowerCase()
+    .replace(/ /g, "-")
+    .replace(/[^\w-]+/g, "");
+}
+
 export const urlString = (slug, ticker, start) =>
   `https://algo-api-app.herokuapp.com/${slug}?ticker=${ticker}&start=${start}`;
 
-export default { urlString, makeTitle, zipOHLC, zipTimeseries };
+export default { urlString, slugToTitle, zipOHLC, zipTimeseries };

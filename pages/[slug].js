@@ -12,7 +12,7 @@ import useRequest from "../components/useRequest";
 import { series, options } from "../utils/config";
 
 // url for api
-import { urlString } from "../utils/utils";
+import { urlString, titleToSlug } from "../utils/utils";
 
 // available routes from api
 import { slugs } from "../utils/constants";
@@ -23,22 +23,22 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
 });
 
 // TO-DO LIST
-// connect inputs to parent states for url
-// handle button click event
+// add context provider to remove prop drilling
 // update URL when indicator is selected
 // add oscillators chart in ternary operator
 
 const IndicatorPage = ({ slug }) => {
   const [ticker, setTicker] = useState("MSFT");
   const [start, setStart] = useState("2021-01-01");
+  const [indicator, setIndicator] = useState("Supertrend");
+  // const [slug, setSlug] = useState("supertrend");
 
   const [url, setUrl] = useState(urlString(slug, ticker, start));
 
   let { data, loading, error } = useRequest(url);
 
-  const handleClick = (slug, ticker, start) => {
-    setUrl(urlString(slug, ticker, start));
-    let { data, loading, error } = useRequest(url);
+  const handleClick = () => {
+    setUrl(urlString(titleToSlug(indicator), ticker, start));
   };
 
   return (
@@ -58,7 +58,13 @@ const IndicatorPage = ({ slug }) => {
           <h1>oscillators in beta</h1>
         ))}
 
-      <UserInputs />
+      <UserInputs
+        setTicker={setTicker}
+        setStart={setStart}
+        setIndicator={setIndicator}
+        start={start}
+        onClick={handleClick}
+      />
     </>
   );
 };

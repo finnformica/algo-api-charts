@@ -11,20 +11,37 @@ import { BasicDatePicker } from "../components/DatePicker";
 import { slugs } from "../utils/constants";
 
 // format slugs
-import { makeTitle } from "../utils/utils";
+import { slugToTitle } from "../utils/utils";
 
-export const UserInputs = ({ slug, ticker, date }) => {
+export const UserInputs = ({
+  slug,
+  ticker,
+  date,
+  setStart,
+  start,
+  setTicker,
+  setIndicator,
+  onClick,
+}) => {
   return (
     <Stack my={3} mx={2} spacing={2} direction={{ xs: "column", sm: "row" }}>
-      <BasicDatePicker label="start date" />
-      <TextField id="text-field-ticker" label="ticker" variant="outlined" />
+      <BasicDatePicker label="start date" setValue={setStart} value={start} />
+      <TextField
+        id="text-field-ticker"
+        label="ticker"
+        variant="outlined"
+        onChange={(event) => {
+          setTicker(event.target.value);
+        }}
+      />
       <ComboBox
         id="combo-box-indicator"
-        options={slugs.map((slug) => makeTitle(slug))}
+        options={slugs.map((slug) => slugToTitle(slug))}
         label="indicator"
         width={300}
+        setValue={setIndicator}
       />
-      <Button variant="contained" size="medium">
+      <Button variant="contained" size="medium" onClick={onClick}>
         Submit
       </Button>
     </Stack>
