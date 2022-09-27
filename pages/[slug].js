@@ -28,14 +28,13 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
 
 // TO-DO LIST
 // add oscillators chart in ternary operator
-// put input states into local storage for persistance
 
 const IndicatorPage = () => {
   const router = useRouter();
 
   // define input states
   const [ticker, setTicker] = useState("MSFT");
-  const [start, setStart] = useState("2021-01-02");
+  const [start, setStart] = useState("2021-01-01");
   const [indicator, setIndicator] = useState("Supertrend");
 
   // define fetch url
@@ -53,12 +52,9 @@ const IndicatorPage = () => {
   }, [url]);
 
   const handleClick = () => {
-    console.log({
-      slug: titleToSlug(indicator),
-      ticker,
-      start,
-    });
     setUrl(urlString(titleToSlug(indicator), ticker, start));
+
+    localStorage.setItem("info", JSON.stringify({ start, indicator, ticker }));
   };
 
   return (
@@ -71,7 +67,7 @@ const IndicatorPage = () => {
             fontFamily: "sans-serif",
           }}
         >
-          <CircularProgress />
+          <CircularProgress pb={4} />
           <h1>Data is loading...</h1>
         </div>
       )}
@@ -94,6 +90,8 @@ const IndicatorPage = () => {
             setStart={setStart}
             setIndicator={setIndicator}
             start={start}
+            ticker={ticker}
+            indicator={indicator}
             onClick={handleClick}
           />
         </>

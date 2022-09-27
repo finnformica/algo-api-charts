@@ -14,9 +14,8 @@ import { slugs } from "../utils/constants";
 import { slugToTitle } from "../utils/utils";
 
 export const UserInputs = ({
-  slug,
   ticker,
-  date,
+  indicator,
   setStart,
   start,
   setTicker,
@@ -30,6 +29,7 @@ export const UserInputs = ({
         id="text-field-ticker"
         label="ticker"
         variant="outlined"
+        value={ticker}
         onChange={(event) => {
           setTicker(event.target.value);
         }}
@@ -40,6 +40,7 @@ export const UserInputs = ({
         label="indicator"
         width={300}
         setValue={setIndicator}
+        value={indicator}
       />
       <Button variant="contained" size="medium" onClick={onClick}>
         Submit
