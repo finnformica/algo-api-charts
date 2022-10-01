@@ -1,6 +1,6 @@
 import { zipOHLC, zipTimeseries } from "./utils";
 
-export const options = (ticker, title) => ({
+export const optionsOverlay = (ticker, title) => ({
   chart: {
     type: "candlestick",
     height: 350,
@@ -28,7 +28,7 @@ export const options = (ticker, title) => ({
   },
 });
 
-export const series = ({
+export const seriesOverlay = ({
   price: { open, high, low, close },
   signals,
   info: { ticker },
@@ -56,4 +56,4 @@ export const series = ({
   return mapped;
 };
 
-export default { series, options };
+export default { seriesOverlay, optionsOverlay };

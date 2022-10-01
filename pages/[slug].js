@@ -13,7 +13,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import useRequest from "../components/useRequest";
 
 // config for candlestick chart
-import { series, options } from "../utils/config";
+import { seriesOverlay, optionsOverlay } from "../utils/configOverlay";
 
 // url for api
 import { urlString, titleToSlug, slugToTitle } from "../utils/utils";
@@ -78,12 +78,19 @@ const IndicatorPage = () => {
         <>
           {data.info.type === "overlay" ? (
             <ReactApexChart
-              options={options(ticker, slugToTitle(data.info.name))}
-              series={series(data)}
+              options={optionsOverlay(ticker, slugToTitle(data.info.name))}
+              series={seriesOverlay(data)}
               type="candlestick"
             />
           ) : (
-            <h1>oscillators in beta</h1>
+            <>
+              <ReactApexChart
+                options={options(ticker, slugToTitle(data.info.name))}
+                series={series(data)}
+                type="candlestick"
+              />
+              <ReactApexChart />
+            </>
           )}
           <UserInputs
             setTicker={setTicker}
