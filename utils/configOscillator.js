@@ -1,6 +1,28 @@
 import { zipOHLC, zipTimeseries } from "./utils";
 
-export const optionsOscillator = (ticker, title) => ({
+// make chart height smaller
+export const optionsOscillator = () => ({
+  chart: {
+    type: "line",
+    height: 10,
+  },
+  xaxis: {
+    type: "datetime",
+    tooltip: {
+      enabled: true,
+    },
+  },
+  yaxis: {
+    tooltip: {
+      enabled: false,
+    },
+  },
+  tooltip: {
+    shared: false,
+  },
+});
+
+export const options = (ticker, title) => ({
   chart: {
     type: "candlestick",
     height: 350,
@@ -41,6 +63,24 @@ export const seriesOscillator = ({
       Object.values(signals[signal])
     ),
   }));
+
+  return mapped;
+};
+
+// remove signal data from function
+export const series = ({
+  price: { open, high, low, close },
+  signals,
+  info: { ticker },
+}) => {
+  const mapped = Object.keys(signals).map((signal) => ({
+    name: signal,
+    type: "line",
+    data: zipTimeseries(
+      Object.keys(signals[signal]),
+      Object.values(signals[signal])
+    ),
+  }));
   mapped.push({
     name: ticker + " Price",
     type: "candlestick",
@@ -56,4 +96,4 @@ export const seriesOscillator = ({
   return mapped;
 };
 
-export default { seriesOscillator, optionsOscillator };
+export default { seriesOscillator, series, options, optionsOscillator };

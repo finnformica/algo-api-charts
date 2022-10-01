@@ -14,6 +14,12 @@ import useRequest from "../components/useRequest";
 
 // config for candlestick chart
 import { seriesOverlay, optionsOverlay } from "../utils/configOverlay";
+import {
+  seriesOscillator,
+  series,
+  optionsOscillator,
+  options,
+} from "../utils/configOscillator";
 
 // url for api
 import { urlString, titleToSlug, slugToTitle } from "../utils/utils";
@@ -28,6 +34,7 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
 
 // TO-DO LIST
 // add oscillators chart in ternary operator
+// convert page to index.js
 
 const IndicatorPage = () => {
   const router = useRouter();
@@ -35,7 +42,7 @@ const IndicatorPage = () => {
   // define input states
   const [ticker, setTicker] = useState("MSFT");
   const [start, setStart] = useState("2021-01-01");
-  const [indicator, setIndicator] = useState("Supertrend");
+  const [indicator, setIndicator] = useState("Rsi");
 
   // define fetch url
   const [url, setUrl] = useState(
@@ -89,7 +96,12 @@ const IndicatorPage = () => {
                 series={series(data)}
                 type="candlestick"
               />
-              <ReactApexChart />
+
+              <ReactApexChart
+                options={optionsOscillator()}
+                series={seriesOscillator(data)}
+                type="candlestick"
+              />
             </>
           )}
           <UserInputs
@@ -107,7 +119,7 @@ const IndicatorPage = () => {
   );
 };
 
-// only allow selected routes, replace list with programmatic solution
+// only allow selected routes, replace slug list with programmatic solution
 export async function getStaticPaths() {
   const paths = slugs.map((slug) => ({
     params: {
